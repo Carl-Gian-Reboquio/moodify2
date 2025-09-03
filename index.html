@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Moodify 💖</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: #f8f8f8;
+      padding: 60px;
+      transition: background 1s ease, background-image 1s ease; /* smooth transition */
+    }
+
+    .meter-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .emoji-display {
+      margin: 30px 0;
+    }
+
+    .emoji-display img {
+      width: 120px;  
+      height: auto;
+      opacity: 1;
+      transition: opacity 0.5s ease, transform 0.3s ease;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="meter-box">
+    <h1>Moodify 💖</h1>
+    <p>Slide to check your mood</p>
+
+    <!-- Default mood image -->
+    <div class="emoji-display">
+      <img id="emoji" src="images/neutral.png" alt="Mood">
+    </div>
+
+    <!-- Default slider = Neutral -->
+    <input type="range" id="moodSlider" min="0" max="4" value="2" step="1">
+
+    <div class="labels">
+      <span> Angry</span>
+      <span> Sad</span>
+      <span> Neutral</span>
+      <span> Happy</span>
+      <span> Overjoyed</span>
+    </div>
+  </div>
+
+  <script>
+    const moodSlider = document.getElementById('moodSlider');
+    const emoji = document.getElementById('emoji');
+
+    const moodEmojis = [
+      'images/angry.png',     // 0
+      'images/sad.png',       // 1
+      'images/neutral.png',   // 2
+      'images/happy.png',     // 3
+      'images/overjoyed.png'  // 4
+    ];
+
+    // Softer background gradients
+    const moodBackgrounds = [
+      "linear-gradient(135deg, #ffb3b3 25%, #ff4d4d 100%)", // Angry - pastel red
+      "linear-gradient(135deg, #b3d9ff 25%, #3399ff 100%)", // Sad - pastel blue
+      "linear-gradient(135deg, #f5f5f5 25%, #e0e0e0 100%)", // Neutral - dirty white
+      "linear-gradient(135deg, #fff5b3 25%, #ffd633 100%)", // Happy - pastel yellow
+      "linear-gradient(135deg, #ffd1a3 25%, #ff944d 100%)"  // Overjoyed - pastel orange
+    ];
+
+    function updateMood(value) {
+      // Fade + bounce effect for emoji
+      emoji.style.opacity = 0;
+      setTimeout(() => {
+        emoji.src = moodEmojis[value];
+        emoji.style.opacity = 1;
+        emoji.style.transform = "scale(1.1)";
+        setTimeout(() => emoji.style.transform = "scale(1)", 200);
+      }, 300);
+
+      // Smoothly change background
+      document.body.style.backgroundImage = moodBackgrounds[value];
+    }
+
+    // Change on slider move
+    moodSlider.addEventListener('input', function () {
+      updateMood(this.value);
+    });
+
+    // Initialize mood on page load
+    window.onload = () => {
+      updateMood(moodSlider.value);
+    };
+  </script>
+
+</body>
+</html>
